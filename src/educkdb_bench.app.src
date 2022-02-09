@@ -1,0 +1,13 @@
+%% -*- mode: erlang -*-
+{application, educkdb_bench,
+ [{description, "Benchmarc for educkdb"},
+  {vsn, "git"},
+  {modules, []},
+  {registered, []},
+  {env, []},
+  {applications, [kernel, stdlib, educkdb]},
+  {licenses, ["Apache-2.0"]},
+  {links, [
+    {"GitHub", "https://github.com/mmzeeman/educkdb_bench"}
+  ]}
+ ]}.
