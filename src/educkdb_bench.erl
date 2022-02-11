@@ -1,7 +1,7 @@
 
 -module(educkdb_bench).
 
--export([main/0, ets/0]).
+-export([main/0, appender/0, ets/0]).
 
 ets() ->
     Ref = ets:new(bench, [ordered_set, {keypos, 1}]),
@@ -17,6 +17,39 @@ ets() ->
                          end),
 
     io:fwrite("100_000 inserts took: ~p milliseconds~n", [Time/1000]),
+
+    ok.
+
+appender() ->
+    {ok, Db} = educkdb:open(":memory:"),
+    {ok, Conn} = educkdb:connect(Db),
+
+    {ok, _, []} = q(Conn, "create table bench (a int, b int, c int, d int, e int, f int, g int, h int, i int, j int)"),
+
+    Values = lists:seq(1, 10),
+    Range = lists:seq(1, 100_000),
+
+    %% Insert 1_000_000 records
+    {Time, _} = timer:tc(fun() ->
+                                 {ok, [], []} = q(Conn, "begin;"),
+                                 {ok, Appender} = educkdb:appender_create(Conn, undefined, <<"bench">>),
+                                 lists:foreach(fun(_) ->
+                                                       [ ok = educkdb:append_int32(Appender, V) || V <- Values ],
+                                                       ok = educkdb:appender_end_row(Appender)
+                                               end,
+                                               Range),
+                                 educkdb:appender_flush(Appender),
+                                 {ok, [], []} = q(Conn, "commit;")
+                         end),
+
+    io:fwrite("100_000 inserts took: ~p milliseconds~n", [Time/1000]),
+
+    %% Select 100_000 
+    {SelectTime, {ok, _, Rows}} = timer:tc(fun() ->
+                                                   q(Conn, "select * from bench;")
+                                           end),
+    
+    io:fwrite("Select of ~p rows took: ~p milliseconds~n", [length(Rows), SelectTime/1000]),
 
     ok.
 
