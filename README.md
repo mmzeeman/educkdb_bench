@@ -8,3 +8,4 @@ Some routines to check educkdb implementation
 
 # Retrieval now uses new data_chunk interface of duckdb.
 
+<img width="519" alt="Screenshot 2022-04-17 at 20 40 06" src="https://user-images.githubusercontent.com/1024972/163728020-4153e623-3210-4760-aa8a-d9300e15a49b.png">
