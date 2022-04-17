@@ -1,1 +1,8 @@
-[].
+{"1.2.0",
+[{<<"educkdb">>,{pkg,<<"educkdb">>,<<"0.3.0">>},0}]}.
+[
+{pkg_hash,[
+ {<<"educkdb">>, <<"EA7DEAE1046E74DE9FB7DBBB732452AE90A84D867E85A0A361D213A7229D98B9">>}]},
+{pkg_hash_ext,[
+ {<<"educkdb">>, <<"DDE0536138FC302CAD353B49B54911EF5AFA9917E6E571231AE4E04B12D0D287">>}]}
+].
